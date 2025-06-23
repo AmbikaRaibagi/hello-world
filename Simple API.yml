@@ -1,0 +1,32 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Resources:
+  SimpleApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: SimpleMockApi
+
+  RootMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref SimpleApi
+      ResourceId: !GetAtt SimpleApi.RootResourceId
+      HttpMethod: GET
+      AuthorizationType: NONE
+      Integration:
+        Type: MOCK
+        RequestTemplates:
+          application/json: '{ "statusCode": 200 }'
+        IntegrationResponses:
+          - StatusCode: 200
+            ResponseTemplates:
+              application/json: '{"message": "Hello from Mock API"}'
+      MethodResponses:
+        - StatusCode: 200
+          ResponseModels:
+            application/json: "Empty"
+
+Outputs:
+  ApiInvokeURL:
+    Description: "Invoke URL for the API"
+    Value: !Sub "https://${SimpleApi}.execute-api.${AWS::Region}.amazonaws.com/prod/"
