@@ -15,5 +15,6 @@ phases:
 artifacts:
   files:
     - target/hello-world.jar
+    - SimpleAPI.yml
     - template-export.yml
   discard-paths: yes
